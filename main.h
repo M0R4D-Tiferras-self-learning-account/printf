@@ -2,12 +2,15 @@
 #define MAIN_H
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdarg.h>
-#include <limits.h>
 #include <unistd.h>
+#include <math.h>
+#include <limits.h>
 
-int _putchar(char c);
+int print_char(char c);
+int print_string(char *s);
 int _printf(const char *format, ...);
+int _strlen(int myNum);
+void check_number(int n);
 
 #endif
