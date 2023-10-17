@@ -12,5 +12,6 @@ int print_string(char *s);
 int _printf(const char *format, ...);
 int _strlen(int myNum);
 void check_number(int n);
+int num_len(int n);
 
 #endif
