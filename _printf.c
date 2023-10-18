@@ -1,23 +1,75 @@
 #include "main.h"
 
 /**
- * _printf - user defined printf
- * @format: format string
+ * handle_integer_specifier - Handles integer (d and i) format specifiers.
  *
- * Return: size of printed arguments
+ * @num: integer value
+ *
+ * Return: The number of characters printed
  */
 
-int _printf(const char *format, ...)
+int handle_integer_specifier(int num)
 {
-	char *strCopy;
-	char c;
 	int len = 0;
-	int num;
-	va_list ap;
 
-	va_start(ap, format);
-	if (!format)
-		return (-1);
+	if (num < 0)
+	{
+		len++;
+	}
+	len += num_len(num);
+	check_number(num);
+
+	return (len);
+}
+
+/**
+ * handle_format_specifier - format specifier from format string.
+ *
+ * @format_specifier: The format specifier character
+ * @ap: va_list of arguments
+ *
+ * Return: The number of characters printed
+ */
+
+int handle_format_specifier(char format_specifier, va_list ap)
+{
+	int len = 0;
+
+	switch (format_specifier)
+	{
+		case 'c':
+			len += print_char(va_arg(ap, int));
+			break;
+		case 's':
+			len += print_string(va_arg(ap, char *));
+			break;
+		case 'd':
+		case 'i':
+			len += handle_integer_specifier(va_arg(ap, int));
+			break;
+		default:
+			len += print_char('%');
+			len += print_char(format_specifier);
+			break;
+	}
+
+	return (len);
+}
+
+
+/**
+ * handle_format_string - Processes the format string and calls functions
+ *
+ * @format: The format string
+ * @ap: va_list of arguments
+ *
+ * Return: The number of characters printed
+ */
+
+int handle_format_string(const char *format, va_list ap)
+{
+	int len = 0;
+
 	while (*format)
 	{
 		if (*format == '%')
@@ -33,31 +85,7 @@ int _printf(const char *format, ...)
 			}
 			else
 			{
-				switch (*format)
-				{
-					case 'c':
-						c = (va_arg(ap, int));
-						len += print_char(c);
-						break;
-					case 's':
-						strCopy = (va_arg(ap, char *));
-						len += print_string(strCopy);
-						break;
-					case 'd':
-					case 'i':
-						num = va_arg(ap, int);
-						if (num < 0)
-						{
-							len++;
-						}
-						len += num_len(num);
-						check_number(num);
-						break;
-					default:
-						len += print_char('%');
-						len += print_char(*format);
-						break;
-				}
+				len += handle_format_specifier(*format, ap);
 			}
 		}
 		else
@@ -66,6 +94,28 @@ int _printf(const char *format, ...)
 		}
 		format++;
 	}
+
+	return (len);
+}
+
+/**
+ * _printf - user defined printf
+ * @format: format string
+ *
+ * Return: size of printed arguments
+ */
+
+int _printf(const char *format, ...)
+{
+	va_list ap;
+	int len = 0;
+
+	va_start(ap, format);
+	if (!format)
+		return (-1);
+
+	len = handle_format_string(format, ap);
+
 	va_end(ap);
 	return (len);
 }
