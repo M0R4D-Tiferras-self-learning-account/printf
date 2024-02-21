@@ -34,6 +34,7 @@ This project aims to implement a simplified version of the `printf` function in 
 - One project repository per group
 - Other members should not fork the project to ensure only one team member has the repository in their GitHub account
 - Plagiarism is strictly forbidden
+- Any kind of cheating is detected by <a herf="https://twitter.com/i/status/1651460956600549376"> Kimba bot </a>. Cheating is not an option.
 
 ## Compilation
 - Code will be compiled using `gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c`
